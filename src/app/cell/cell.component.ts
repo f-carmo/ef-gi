@@ -15,6 +15,10 @@ export class CellComponent implements OnInit {
   get enhancedLevel() {
     return this.cellLevel + (50 * this.enhancement);
   }
+  get starLevel() {
+    const res = Math.floor((this.enhancedLevel - 220) / 80);
+    return res > 0 ? res : 0;
+  }
 
   constructor() { }
 
