@@ -1,0 +1,10 @@
+<table>
+    <tr *ngFor="let row of tableData">
+        <td *ngFor="let cell of row; let i = index">
+            <app-cell
+                [cellNumber] = cell.cellNumber
+                [cellLevel] = cell.cellLevel
+            ></app-cell>
+        </td>
+    </tr>
+</table>

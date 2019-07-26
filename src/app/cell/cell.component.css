@@ -1,0 +1,22 @@
+div {
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.killed {
+    background-color: green;
+}
+
+.alive {
+    background-color: red;
+}
+
+td {
+    width: 30px;
+    height: 25px;
+    padding: 5px;
+}
+
+.text-right {
+    text-align: right;
+}

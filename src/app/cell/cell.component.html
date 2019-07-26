@@ -1,0 +1,16 @@
+<div 
+    (click)="onClick()" 
+    [class.killed]="killed"
+    [class.alive]="!killed"
+    >
+    <table>
+        <tr>
+            <td>No. {{cellNumber}}</td>
+            <td class="text-right">{{enhancement}}</td>
+        </tr>
+        <tr>
+            <td>Lv. {{cellLevel}}</td>
+            <td class="text-right">{{starLevel}}</td>
+        </tr>
+    </table>
+</div>
