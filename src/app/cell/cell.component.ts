@@ -10,8 +10,11 @@ export class CellComponent implements OnInit {
   @Input() cellNumber: number;
   @Input() cellLevel: number;
   @Input() redStar: boolean;
-  @Input() enhancement: number = 0;
+  enhancement = 0;
   killed = false;
+  get enhancedLevel() {
+    return this.cellLevel + (50 * this.enhancement);
+  }
 
   constructor() { }
 
@@ -19,6 +22,11 @@ export class CellComponent implements OnInit {
   }
 
   onClick() {
-    this.killed = true;
+    if (!this.killed) this.killed = true;
+    else if (this.enhancement < 3) this.enhancement++;
+    else {
+      this.killed = false;
+      this.enhancement = 0;
+    }
   }
 }
