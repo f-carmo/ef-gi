@@ -2,6 +2,7 @@
     (click)="onClick()" 
     [class.killed]="killed"
     [class.alive]="!killed"
+    [class.red-star]="redStar"
     >
     <table>
         <tr>
@@ -10,7 +11,7 @@
         </tr>
         <tr>
             <td>Lv. {{enhancedLevel}}</td>
-            <td class="text-right">{{starLevel}}</td>
+            <td class="text-right"><span *ngIf="redStar">♦</span>{{starLevel}}</td>
         </tr>
     </table>
 </div>

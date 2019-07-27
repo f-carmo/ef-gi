@@ -11,6 +11,9 @@ export class TableComponent implements OnInit {
 
   @ViewChildren(CellComponent) cells: QueryList<CellComponent>;
   tableData: any[] = [];
+  score: number;
+  totalStars: number;
+  totalRedStars: number;
 
   constructor() { 
     
@@ -27,8 +30,22 @@ export class TableComponent implements OnInit {
 
   }
 
-  onClick() {
+  updateScore($event) {
+    this.score = 0;
+    this.totalStars = 0;
+    this.totalRedStars = 0;
+    this.cells.forEach(cell => {
+      if (cell.killed) {
+        this.score += cell.totalScore;
+        this.totalStars += cell.starLevel;
+        if (cell.redStar) {
+          this.totalStars += 1;
+          this.totalRedStars++;
+        }
+      }
+    });
 
+    this.score = Math.ceil(this.score * (1 + (this.totalStars/100)));
   }
 
 }
