@@ -1,0 +1,8 @@
+---
+applications:
+- name: roflhouse-gi-simulator
+  path: ./dist/ef-gi/
+  memory: 128M
+  disk_quota: 128M
+  instances: 1
+  buildpack: staticfile_buildpack

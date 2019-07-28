@@ -7,10 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ScoreboardComponent implements OnInit {
 
-  @Input() score: any;
-  @Input() stars: any;
-  @Input() redStars: any;
-  @Input() totalEnhancements: any;
+  @Input() score = 0;
+  @Input() stars = 0;
+  @Input() redStars = 0;
+  @Input() usedTickets = 0;
 
   constructor() { }
 

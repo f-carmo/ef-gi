@@ -1,17 +1,22 @@
 <div 
-    (click)="onClick()" 
+    (click)="onClick()"
+    (contextmenu)="onReset()"
+    [class.blocked]="blocked"
     [class.killed]="killed"
-    [class.alive]="!killed"
+    [class.alive]="!killed && !blocked"
     [class.red-star]="redStar"
+    [class.enhanced1]="enhancement == 1"
+    [class.enhanced2]="enhancement == 2"
+    [class.enhanced3]="enhancement == 3"
     >
     <table>
         <tr>
-            <td>No. {{cellNumber}}</td>
-            <td class="text-right">+{{enhancement}}</td>
+            <td>No.{{cellNumber}}</td>
+            <td class="text-right enhancement-text" [class.enhanced]="enhancement > 0">+{{enhancement}}</td>
         </tr>
-        <tr>
-            <td>Lv. {{enhancedLevel}}</td>
-            <td class="text-right"><span *ngIf="redStar">♦</span>{{starLevel}}</td>
+        <tr >
+            <td class="bottom-text">Lv. {{enhancedLevel}}</td>
+            <td class="bottom-text text-right"><span *ngIf="redStar">♦</span>{{starLevel}}</td>
         </tr>
     </table>
 </div>

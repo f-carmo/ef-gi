@@ -1,18 +1,18 @@
 <table>
     <tr>
         <td>Total score: </td>
-        <td>{{score}}</td>
+        <td>{{score || 0}}</td>
     </tr>
     <tr>
         <td>Total stars: </td>
-        <td>{{stars}}</td>
+        <td>{{stars || 0}}</td>
     </tr>
     <tr>
         <td>Total red stars: </td>
-        <td>{{redStars}}</td>
+        <td>{{redStars || 0}}</td>
     </tr>
     <tr>
-        <td>Total enhancements: </td>
-        <td>{{totalEnhancements}}</td>
+        <td>Total tickets: </td>
+        <td>{{usedTickets || 0}}/240</td>
     </tr>
 </table>

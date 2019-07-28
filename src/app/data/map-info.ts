@@ -3,7 +3,7 @@ import { CellType } from './cell-type';
 export const TABLE_DATA: CellType[] = [
     { cellNumber: 1,    cellLevel: 51,      redStar: false },
     { cellNumber: 2,    cellLevel: 308,     redStar: false },
-    { cellNumber: 3,    cellLevel: 292,     redStar: false },
+    { cellNumber: 3,    cellLevel: 292,     redStar: true },
     { cellNumber: 4,    cellLevel: 350,     redStar: false },
     { cellNumber: 5,    cellLevel: 406,     redStar: true },
     { cellNumber: 6,    cellLevel: 378,     redStar: true },
@@ -128,7 +128,7 @@ export const TABLE_DATA: CellType[] = [
     { cellNumber: 117,  cellLevel: 471,     redStar: false },
 
     { cellNumber: 118,  cellLevel: 624,     redStar: false },
-    { cellNumber: 119,  cellLevel: 362,     redStar: false },
+    { cellNumber: 119,  cellLevel: 635,     redStar: false },
     { cellNumber: 120,  cellLevel: 432,     redStar: false },
     { cellNumber: 121,  cellLevel: 429,     redStar: true },
     { cellNumber: 122,  cellLevel: 465,     redStar: false },

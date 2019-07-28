@@ -1,23 +1,52 @@
 div {
-    font-size: 0.9em;
+    font-size: 0.8em;
     white-space: nowrap;
     cursor: pointer;
+    border-radius: 10%;
+    width: 85px;
+    height: 55px;
+}
+
+.enhancement-text {
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
 .killed {
-    background-color: green;
+    background-color: #80D8FF;
+    border: 2px solid;
+    border-color: #01579B;
+}
+
+.enhanced1 {
+    background-color: #40C4FF;
+}
+
+.enhanced2 {
+    background-color: #00B0FF;
+}
+
+.enhanced3 {
+    background-color: #0091EA;
 }
 
 .alive {
-    background-color: red;
+    background-color: #EF5350;
+    border: 2px solid;
+    border-color: #D50000;
 }
 
-td {
-    width: 30px;
-    height: 20px;
-    padding: 5px;
+.blocked {
+    background-color: #9E9E9E;
+    border: 2px solid;
+    border-color: black;
 }
 
 .text-right {
     text-align: right;
+    padding-left: 16px;
+}
+
+.bottom-text {
+    padding-top: 10px;
 }

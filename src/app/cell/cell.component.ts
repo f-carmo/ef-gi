@@ -8,11 +8,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class CellComponent implements OnInit {
 
   @Output() changed: EventEmitter<any> = new EventEmitter();
-  @Input() cellNumber: number;
+  @Input() cellNumber = 0;
   @Input() cellLevel: number;
   @Input() redStar: boolean;
+  @Input() blocked = true;
+
   enhancement = 0;
   killed = false;
+  usedTickets = 0;
   get enhancedLevel() {
     return this.cellLevel + (50 * this.enhancement);
   }
@@ -36,14 +39,41 @@ export class CellComponent implements OnInit {
   ngOnInit() {
   }
 
+  onReset() {
+    // cell 1 cannot be unkilled
+    if (this.cellNumber == 1) {
+      this.enhancement = 0;
+      this.usedTickets = 0;
+      this.changed.emit({cellNumber: this.cellNumber, eventType: 'kill'});
+    } else {
+      this.killed = false;
+      this.enhancement = 0;
+      this.usedTickets = 0;
+      this.changed.emit({cellNumber: this.cellNumber, eventType: 'reset'});
+    }    
+    return false;
+  }
+
   onClick() {
+    if (this.blocked) return;
+
+    let event = 'kill';
+    this.usedTickets++;
     if (!this.killed) this.killed = true;
     else if (this.enhancement < 3) this.enhancement++;
     else {
-      this.killed = false;
-      this.enhancement = 0;
+      // cell 1 will only reset to killed
+      if (this.cellNumber == 1) {
+        this.enhancement = 0;
+        this.usedTickets = 0;  
+      } else {
+        this.killed = false;
+        this.enhancement = 0;
+        this.usedTickets = 0;
+        event = 'reset';
+      }
     }
 
-    this.changed.emit({starLevel: this.starLevel, cellLevel: this.enhancedLevel, totalScore: this.totalScore});
+    this.changed.emit({cellNumber: this.cellNumber, eventType: event});
   }
 }

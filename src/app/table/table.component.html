@@ -1,19 +1,38 @@
-<table>
-    <tr *ngFor="let row of tableData">
-        <td *ngFor="let cell of row; let i = index">
-            <app-cell
-                [cellNumber]='cell.cellNumber'
-                [cellLevel]='cell.cellLevel'
-                [redStar]='cell.redStar'
-                (changed)='updateScore($event)'
-            ></app-cell>
-        </td>
-    </tr>
-</table>
-<app-scoreboard
-    [score]='score'
-    [stars]='totalStars'
-    [redStars]='totalRedStars'
-    >
+<div class="row">
+    <div class="col-md-8">
+        <table>
+            <tr *ngFor="let row of tableData">
+                <td *ngFor="let cell of row">
+                    <app-cell
+                        [cellNumber]='cell.cellNumber'
+                        [cellLevel]='cell.cellLevel'
+                        [redStar]='cell.redStar'
+                        (changed)='killCell($event)'
+                    ></app-cell>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+</div>
+<br/>
+<div class="row">
+    <div class="col-md-4">
+        <app-scoreboard
+            [score]='score'
+            [stars]='totalStars'
+            [redStars]='totalRedStars'
+            [usedTickets]='usedTickets'>
+        </app-scoreboard>        
+    </div>
+    <div class="col-md-4">
+        <span>Left click to kill a cell</span><br/>
+        <span>Left click again to enhance and kill</span><br/>
+        <span>Right click to reset the cell</span><br/>
+        <span>♦ represents a red star</span><br/><br/><br/><br/>
+    </div>
+    <div class="col-md-4">
+        <span style="font-size: 24px"> NO CACHE ENABLED!<br/> REFRESHING WILL RESET THE MAP</span>
+    </div>
+</div>
 
-</app-scoreboard>
