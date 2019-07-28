@@ -7,13 +7,24 @@
                         [cellNumber]='cell.cellNumber'
                         [cellLevel]='cell.cellLevel'
                         [redStar]='cell.redStar'
+                        [killed]='cell.killed || false'
+                        [blocked]='cell.blocked'
+                        [enhancement]='cell.enhancement || 0'
+                        [usedTickets]='cell.usedTickets || 0'
                         (changed)='killCell($event)'
+                        (reset)='resetCell($event)'
                     ></app-cell>
                 </td>
             </tr>
         </table>
     </div>
-    
+    <div class="col-md-4">
+        <app-save
+            (resetMap)='resetMap($event)'
+            (restoreMap)='restoreMap($event)'
+            >
+        </app-save>
+    </div>
 </div>
 <br/>
 <div class="row">
@@ -32,7 +43,7 @@
         <span>♦ represents a red star</span><br/><br/><br/><br/>
     </div>
     <div class="col-md-4">
-        <span style="font-size: 24px"> NO CACHE ENABLED!<br/> REFRESHING WILL RESET THE MAP</span>
+        <span style="font-size: 24px">Enable local storage to use save buttons</span>
     </div>
 </div>
 

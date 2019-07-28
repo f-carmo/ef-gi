@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { TABLE_DATA } from '../data/map-info';
 import { CellComponent } from '../cell/cell.component';
+import { SaveComponent } from '../save/save.component';
+import { CellType } from '../data/cell-type';
 
 @Component({
   selector: 'app-table',
@@ -10,6 +12,7 @@ import { CellComponent } from '../cell/cell.component';
 export class TableComponent implements OnInit {
 
   @ViewChildren(CellComponent) cells: QueryList<CellComponent>;
+  @ViewChild(SaveComponent,  {static: false}) saveBtn: SaveComponent;
   tableData: any[] = [];
   score: number;
   totalStars: number;
@@ -21,28 +24,40 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tableData.push([]);
-    let y = 0;
-    for (let x = 0; x < TABLE_DATA.length; x++) {
-      if (x % 13 === 0) y++;
-      if (typeof this.tableData[y] === "undefined") this.tableData[y] = [];
-      this.tableData[y].push(TABLE_DATA[x]);
-    }
+    this.startMap();
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.cells.first.blocked = false;
+      this.saveBtn.map = this.cells;
+      this.calculateScore();
     });
   }
 
+  startMap() {
+    if (localStorage.getItem('map') !== null) {
+      this.restoreMap();      
+    } else {
+      this.resetMap();
+    }
+  }
+
   killCell($event) {
-    if (this.usedTickets + 1 > 240 && $event.eventType !== 'reset') {
+    if (this.usedTickets + 1 > 240) {
       alert("ticket limits exceeded");
     }
 
-    this.changeSiblings($event.cellNumber, $event.eventType);
+    this.changeSiblings($event.cellNumber, 'kill');
+    this.calculateScore();
+  }
 
+  resetCell($event) {
+    this.changeSiblings($event.cellNumber, 'reset');
+    this.calculateScore();
+  }
+
+  calculateScore() {
     this.score = 0;
     this.totalStars = 0;
     this.totalRedStars = 0;
@@ -58,7 +73,7 @@ export class TableComponent implements OnInit {
         }
       }
     });
-    this.score = Math.ceil(this.score * (1 + (this.totalStars/100)));
+    this.score = Math.round(this.score * (1 + (this.totalStars/100)));
   }
 
   changeSiblings(cellNumber, eventType) {
@@ -121,5 +136,53 @@ export class TableComponent implements OnInit {
       return this.cells.filter((cell) => cell.cellNumber == (cellNumber - 13))[0];
     }
     return new CellComponent();
+  }
+
+  resetMap($event?) {
+    this.tableData = [[]];
+    let y = 0;
+    for (let x = 0; x < TABLE_DATA.length; x++) {
+      if (x % 13 === 0) y++;
+      if (typeof this.tableData[y] === "undefined") this.tableData[y] = [];
+      this.tableData[y].push(TABLE_DATA[x]);
+    }
+
+    if ($event == 'calculateScore'){
+      setTimeout(() => {
+        this.calculateScore();
+      });
+    } 
+  }
+
+  restoreMap($event?) {
+    if (localStorage.getItem('map') == null) {
+      this.resetMap('calculateScore');
+    } else {
+      this.tableData = [[]];
+      let y = -1;
+      let x = 0;
+      const cachedData = JSON.parse(localStorage.getItem('map'));
+        cachedData.map(cell => {
+          let cellObj = new CellType();
+          cellObj.cellNumber = cell.cellNumber,
+          cellObj.cellLevel = cell.cellLevel,
+          cellObj.redStar = cell.redStar,
+          cellObj.blocked = cell.blocked,
+          cellObj.enhancement = cell.enhancement,
+          cellObj.killed = cell.killed,
+          cellObj.usedTickets = cell.usedTickets
+  
+          if (x % 13 === 0) y++;
+          if (typeof this.tableData[y] === "undefined") this.tableData[y] = [];
+          this.tableData[y].push(cellObj);
+          x++;
+        });
+  
+        if ($event == 'calculateScore') {
+          setTimeout(() => {
+            this.calculateScore();
+          });
+        }
+    }
   }
 }
