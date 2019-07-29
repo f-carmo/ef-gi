@@ -73,7 +73,7 @@ export class TableComponent implements OnInit {
         }
       }
     });
-    this.score = Math.round(this.score * (1 + (this.totalStars/100)));
+    this.score = Math.ceil(this.score * (1 + (this.totalStars/100)));
   }
 
   changeSiblings(cellNumber, eventType) {
@@ -162,27 +162,66 @@ export class TableComponent implements OnInit {
       let y = -1;
       let x = 0;
       const cachedData = JSON.parse(localStorage.getItem('map'));
-        cachedData.map(cell => {
-          let cellObj = new CellType();
-          cellObj.cellNumber = cell.cellNumber,
-          cellObj.cellLevel = cell.cellLevel,
-          cellObj.redStar = cell.redStar,
-          cellObj.blocked = cell.blocked,
-          cellObj.enhancement = cell.enhancement,
-          cellObj.killed = cell.killed,
-          cellObj.usedTickets = cell.usedTickets
-  
-          if (x % 13 === 0) y++;
-          if (typeof this.tableData[y] === "undefined") this.tableData[y] = [];
-          this.tableData[y].push(cellObj);
-          x++;
+      cachedData.map(cell => {
+        let cellObj = new CellType();
+        cellObj.cellNumber = cell.cellNumber,
+        cellObj.cellLevel = cell.cellLevel,
+        cellObj.redStar = cell.redStar,
+        cellObj.blocked = cell.blocked,
+        cellObj.enhancement = cell.enhancement,
+        cellObj.killed = cell.killed,
+        cellObj.usedTickets = cell.usedTickets
+
+        if (x % 13 === 0) y++;
+        if (typeof this.tableData[y] === "undefined") this.tableData[y] = [];
+        this.tableData[y].push(cellObj);
+        x++;
+      });
+
+      if ($event == 'calculateScore') {
+        setTimeout(() => {
+          this.calculateScore();
         });
-  
-        if ($event == 'calculateScore') {
-          setTimeout(() => {
-            this.calculateScore();
-          });
-        }
+      }
+    }
+  }
+
+  simulate() {
+    let noMoreStars = false;
+    //while (this.usedTickets < 240) {
+      let filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore > 600);
+      console.log('tile: ' + filteredCells[0].cellNumber, 'new stars: ' + filteredCells[0].newStarsOnKill, 'score: ' + filteredCells[0].nextKillScore)
+      if (filteredCells.length > 0) filteredCells[0].onClick();
+    //}
+  }
+
+  simulateHighestProjectedScore() {
+    while (this.usedTickets < 240) {
+      let filteredCells = this.cells.filter((cell) => !cell.blocked);
+
+      filteredCells.map(cell => {
+        let score = cell.nextKillScore;
+        let totalStars = cell.newStarsOnKill;
+        filteredCells.forEach(xell => {
+
+          if (xell.killed) {
+            score += xell.totalScore;
+            totalStars += xell.starLevel;
+            if (xell.redStar) {
+              totalStars += 1;
+            }
+          }
+        });
+
+        cell.projectedScore = Math.ceil(score * (1 + (totalStars/100)))
+      });
+
+      filteredCells.sort((a,b) => {
+        return b.projectedScore - a.projectedScore;
+      });
+
+      console.log(filteredCells[0].projectedScore, filteredCells[1].projectedScore);
+      filteredCells[0].onClick();
     }
   }
 }

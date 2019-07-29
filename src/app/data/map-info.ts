@@ -128,7 +128,7 @@ export const TABLE_DATA: CellType[] = [
     { cellNumber: 117,  cellLevel: 471,     redStar: false, blocked: true },
 
     { cellNumber: 118,  cellLevel: 624,     redStar: false, blocked: true },
-    { cellNumber: 119,  cellLevel: 635,     redStar: false, blocked: true },
+    { cellNumber: 119,  cellLevel: 365,     redStar: false, blocked: true },
     { cellNumber: 120,  cellLevel: 432,     redStar: false, blocked: true },
     { cellNumber: 121,  cellLevel: 429,     redStar: true,  blocked: true },
     { cellNumber: 122,  cellLevel: 465,     redStar: false, blocked: true },

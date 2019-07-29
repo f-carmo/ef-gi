@@ -18,13 +18,6 @@
             </tr>
         </table>
     </div>
-    <div class="col-md-4">
-        <app-save
-            (resetMap)='resetMap($event)'
-            (restoreMap)='restoreMap($event)'
-            >
-        </app-save>
-    </div>
 </div>
 <br/>
 <div class="row">
@@ -37,13 +30,18 @@
         </app-scoreboard>        
     </div>
     <div class="col-md-4">
+        <button class='btn btn-danger' (click)='simulate()'>Simulate</button><br/>
         <span>Left click to kill a cell</span><br/>
         <span>Left click again to enhance and kill</span><br/>
         <span>Right click to reset the cell</span><br/>
         <span>♦ represents a red star</span><br/><br/><br/><br/>
     </div>
     <div class="col-md-4">
-        <span style="font-size: 24px">Enable local storage to use save buttons</span>
+        <app-save
+            (resetMap)='resetMap($event)'
+            (restoreMap)='restoreMap($event)'
+            >
+        </app-save>
     </div>
 </div>
 
