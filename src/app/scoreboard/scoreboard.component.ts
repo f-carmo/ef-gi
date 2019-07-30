@@ -11,7 +11,8 @@ export class ScoreboardComponent implements OnInit {
   @Input() stars = 0;
   @Input() redStars = 0;
   @Input() usedTickets = 0;
-
+  @Input() rawScore = 0;
+  
   constructor() { }
 
   ngOnInit() {

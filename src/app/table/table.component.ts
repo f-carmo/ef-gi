@@ -15,6 +15,7 @@ export class TableComponent implements OnInit {
   @ViewChild(SaveComponent,  {static: false}) saveBtn: SaveComponent;
   tableData: any[] = [];
   score: number;
+  rawScore: number;
   totalStars: number;
   totalRedStars: number;
   usedTickets: number;
@@ -59,13 +60,14 @@ export class TableComponent implements OnInit {
 
   calculateScore() {
     this.score = 0;
+    this.rawScore = 0;
     this.totalStars = 0;
     this.totalRedStars = 0;
     this.usedTickets = 0;
     this.cells.forEach(cell => {
       this.usedTickets += cell.usedTickets;
       if (cell.killed && !cell.blocked) {
-        this.score += cell.totalScore;
+        this.rawScore += cell.totalScore;
         this.totalStars += cell.starLevel;
         if (cell.redStar) {
           this.totalStars += 1;
@@ -73,7 +75,7 @@ export class TableComponent implements OnInit {
         }
       }
     });
-    this.score = Math.ceil(this.score * (1 + (this.totalStars/100)));
+    this.score = Math.ceil(this.rawScore * (1 + (this.totalStars/100)));
   }
 
   changeSiblings(cellNumber, eventType) {
@@ -187,12 +189,36 @@ export class TableComponent implements OnInit {
   }
 
   simulate() {
-    let noMoreStars = false;
-    //while (this.usedTickets < 240) {
-      let filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore > 600);
-      console.log('tile: ' + filteredCells[0].cellNumber, 'new stars: ' + filteredCells[0].newStarsOnKill, 'score: ' + filteredCells[0].nextKillScore)
+    while (this.usedTickets < 240) {
+      let filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 600 && cell.nextKillScore < 650);
       if (filteredCells.length > 0) filteredCells[0].onClick();
-    //}
+      else {
+        filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 550 && cell.nextKillScore < 600 && cell.enhancement < 2);
+        if (filteredCells.length > 0) filteredCells[0].onClick();
+        else {
+          filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 500 && cell.nextKillScore < 550 && cell.enhancement < 1);
+          if (filteredCells.length > 0) filteredCells[0].onClick();
+          else {
+            //filteredCells = this.cells.filter((cell) => !cell.blocked && cell.newStarsOnKill > 1);
+            if (filteredCells.length > 0) filteredCells[0].onClick();
+            else {
+              this.simulateHighestProjectedScore();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  downgradeLowestScore() {
+    let filteredCells = this.cells.filter((cell) => cell.killed && cell.enhancement > 0);
+
+    filteredCells.sort((a,b) => {return a.totalScore - b.totalScore}) 
+
+    filteredCells[0].enhancement--;
+    filteredCells[0].usedTickets--;
+
+    this.calculateScore();    
   }
 
   simulateHighestProjectedScore() {
@@ -220,7 +246,6 @@ export class TableComponent implements OnInit {
         return b.projectedScore - a.projectedScore;
       });
 
-      console.log(filteredCells[0].projectedScore, filteredCells[1].projectedScore);
       filteredCells[0].onClick();
     }
   }

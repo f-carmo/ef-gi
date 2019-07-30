@@ -91,6 +91,7 @@ export class CellComponent implements OnInit {
   }
 
   onClick() {
+    console.log(this.nextKillScore, this.newStarsOnKill);
     if (this.blocked) return;
 
     let event = 'kill';
