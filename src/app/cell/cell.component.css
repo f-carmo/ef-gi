@@ -50,3 +50,11 @@ div {
 .bottom-text {
     padding-top: 10px;
 }
+
+.path {
+    background-color: yellow;
+}
+
+.complete {
+    background-color: #81C784;
+}

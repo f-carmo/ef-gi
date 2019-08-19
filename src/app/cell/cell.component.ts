@@ -19,6 +19,17 @@ export class CellComponent implements OnInit {
   @Input() usedTickets = 0;
   @Input() killed = false;
   projectedScore = 0;
+  path = false;
+  complete = false;
+
+  get relativeX() {
+    if (this.cellNumber % 13 == 0) return 13;
+    return this.cellNumber % 13;
+  }
+
+  get relativeY() {
+    return Math.ceil(this.cellNumber / 13);
+  }
 
   get enhancedLevel() {
     return this.cellLevel + (50 * this.enhancement);
@@ -76,25 +87,31 @@ export class CellComponent implements OnInit {
   }
 
   onReset() {
-    // cell 1 cannot be unkilled
-    if (this.cellNumber == 1) {
-      this.enhancement = 0;
-      this.usedTickets = 0;
-      this.changed.emit({cellNumber: this.cellNumber});
+    if (!this.complete) {
+      this.complete = true;
     } else {
-      this.killed = false;
-      this.enhancement = 0;
-      this.usedTickets = 0;
-      this.reset.emit({cellNumber: this.cellNumber});
-    }    
+      // cell 1 cannot be unkilled
+      if (this.cellNumber == 1) {
+        this.complete = false;
+        this.enhancement = 0;
+        this.usedTickets = 0;
+        this.changed.emit({cellNumber: this.cellNumber});
+      } else {
+        this.complete = false;
+        this.killed = false;
+        this.enhancement = 0;
+        this.usedTickets = 0;
+        this.reset.emit({cellNumber: this.cellNumber});
+      }
+    }
     return false;
   }
 
   onClick() {
-    console.log(this.nextKillScore, this.newStarsOnKill);
+    console.log(this);
     if (this.blocked) return;
 
-    let event = 'kill';
+    this.path = false;
     this.usedTickets++;
     if (!this.killed) {
       this.killed = true;

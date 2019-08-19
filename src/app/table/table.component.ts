@@ -3,6 +3,7 @@ import { TABLE_DATA } from '../data/map-info';
 import { CellComponent } from '../cell/cell.component';
 import { SaveComponent } from '../save/save.component';
 import { CellType } from '../data/cell-type';
+import { SimulateComponent } from '../simulate/simulate.component';
 
 @Component({
   selector: 'app-table',
@@ -13,6 +14,7 @@ export class TableComponent implements OnInit {
 
   @ViewChildren(CellComponent) cells: QueryList<CellComponent>;
   @ViewChild(SaveComponent,  {static: false}) saveBtn: SaveComponent;
+  @ViewChild(SimulateComponent,  {static: false}) simulateBtn: SimulateComponent;
   tableData: any[] = [];
   score: number;
   rawScore: number;
@@ -32,6 +34,7 @@ export class TableComponent implements OnInit {
     setTimeout(() => {
       this.cells.first.blocked = false;
       this.saveBtn.map = this.cells;
+      this.simulateBtn.cells = this.cells;
       this.calculateScore();
     });
   }
@@ -44,7 +47,7 @@ export class TableComponent implements OnInit {
     }
   }
 
-  killCell($event) {
+  cellKilled($event) {
     if (this.usedTickets + 1 > 240) {
       alert("ticket limits exceeded");
     }
@@ -188,28 +191,6 @@ export class TableComponent implements OnInit {
     }
   }
 
-  simulate() {
-    while (this.usedTickets < 240) {
-      let filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 600 && cell.nextKillScore < 650);
-      if (filteredCells.length > 0) filteredCells[0].onClick();
-      else {
-        filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 550 && cell.nextKillScore < 600 && cell.enhancement < 2);
-        if (filteredCells.length > 0) filteredCells[0].onClick();
-        else {
-          filteredCells = this.cells.filter((cell) => !cell.blocked && cell.nextKillScore >= 500 && cell.nextKillScore < 550 && cell.enhancement < 1);
-          if (filteredCells.length > 0) filteredCells[0].onClick();
-          else {
-            //filteredCells = this.cells.filter((cell) => !cell.blocked && cell.newStarsOnKill > 1);
-            if (filteredCells.length > 0) filteredCells[0].onClick();
-            else {
-              this.simulateHighestProjectedScore();
-            }
-          }
-        }
-      }
-    }
-  }
-
   downgradeLowestScore() {
     let filteredCells = this.cells.filter((cell) => cell.killed && cell.enhancement > 0);
 
@@ -219,34 +200,5 @@ export class TableComponent implements OnInit {
     filteredCells[0].usedTickets--;
 
     this.calculateScore();    
-  }
-
-  simulateHighestProjectedScore() {
-    while (this.usedTickets < 240) {
-      let filteredCells = this.cells.filter((cell) => !cell.blocked);
-
-      filteredCells.map(cell => {
-        let score = cell.nextKillScore;
-        let totalStars = cell.newStarsOnKill;
-        filteredCells.forEach(xell => {
-
-          if (xell.killed) {
-            score += xell.totalScore;
-            totalStars += xell.starLevel;
-            if (xell.redStar) {
-              totalStars += 1;
-            }
-          }
-        });
-
-        cell.projectedScore = Math.ceil(score * (1 + (totalStars/100)))
-      });
-
-      filteredCells.sort((a,b) => {
-        return b.projectedScore - a.projectedScore;
-      });
-
-      filteredCells[0].onClick();
-    }
   }
 }

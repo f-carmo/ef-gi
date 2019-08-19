@@ -11,7 +11,7 @@
                         [blocked]='cell.blocked'
                         [enhancement]='cell.enhancement || 0'
                         [usedTickets]='cell.usedTickets || 0'
-                        (changed)='killCell($event)'
+                        (changed)='cellKilled($event)'
                         (reset)='resetCell($event)'
                     ></app-cell>
                 </td>
@@ -28,14 +28,18 @@
             [stars]='totalStars'
             [redStars]='totalRedStars'
             [usedTickets]='usedTickets'>
-        </app-scoreboard>        
-    </div>
-    <div class="col-md-4">
-        <button class='btn btn-danger' (click)='simulate()'>Simulate</button><br/>
+        </app-scoreboard>
+        <br/><br>
         <span>Left click to kill a cell</span><br/>
         <span>Left click again to enhance and kill</span><br/>
         <span>Right click to reset the cell</span><br/>
         <span>♦ represents a red star</span><br/><br/><br/><br/>
+    </div>
+    <div class="col-md-4">
+        <app-simulate 
+            [usedTickets]='usedTickets'
+            >
+        </app-simulate>
     </div>
     <div class="col-md-4">
         <app-save

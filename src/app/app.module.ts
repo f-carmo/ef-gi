@@ -6,6 +6,7 @@ import { CellComponent } from './cell/cell.component';
 import { TableComponent } from './table/table.component';
 import { ScoreboardComponent } from './scoreboard/scoreboard.component';
 import { SaveComponent } from './save/save.component';
+import { SimulateComponent } from './simulate/simulate.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { SaveComponent } from './save/save.component';
     CellComponent,
     TableComponent,
     ScoreboardComponent,
-    SaveComponent
+    SaveComponent,
+    SimulateComponent
   ],
   imports: [
     BrowserModule
