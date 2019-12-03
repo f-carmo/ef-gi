@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class CellComponent implements OnInit {
 
-  MAXIMUM_KILLABLE_LEVEL = 700;
+  MAXIMUM_KILLABLE_LEVEL = 750;
 
   @Output() changed: EventEmitter<any> = new EventEmitter();
   @Output() reset: EventEmitter<any> = new EventEmitter();
